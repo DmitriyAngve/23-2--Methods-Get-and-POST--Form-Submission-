@@ -34,25 +34,20 @@ btn.classList.add("box");
 
 btn.addEventListener("click", loadData);
 
-function loadData() {
+function loadData(e) {
+  e.preventDefault(); // preventing default actions on submitting the form
   console.log("ready");
-  let url = baseUrl + "?";
-  const eles = output.querySelectorAll("input");
 
-  // Create temporary array for delete first blank string
-  let tempArr = [];
-
-  eles.forEach((el) => {
-    console.log(el.name);
-    // Append it to the URL
-    let temp = `${el.name}=${el.value}`; // it's going construct our Web URL
-    // Populate blank array
-    tempArr.push(temp);
-  });
-  // Build Web URL
-  let reqUrl = tempArr.join("&"); // join together with separator
-  url += reqUrl;
-  console.log(url);
+  // Create Form Data dynamically (new form object)
+  let formData = new FormData(myForm); // it's going generate the empty form data
+  let data = [...formData.entries()];
+  console.log(data);
+  const para = data.map(
+    (x) => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`
+  );
+  const res = para.join("&");
+  console.log(res);
+  let url = baseUrl + "?" + res;
   getData(url);
 }
 
@@ -67,6 +62,7 @@ function getData(url) {
 
 // Iterate JSON data (Generate the page)
 function outputObj(obj) {
+  console.log(obj);
   output1.innerHTML = "";
   for (const prop in obj) {
     output1.innerHTML += `${prop} : ${obj[prop]}<br>`;
