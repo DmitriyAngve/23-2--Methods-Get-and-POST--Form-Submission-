@@ -53,6 +53,7 @@ function loadData(e) {
 // POST data
 function getPost(e) {
   e.preventDefault();
+  const myHeaders = new Headers();
   let formData = new FormData(myForm);
   let body = {};
   // Recreating the form (constructing and adding it to the body object)
@@ -62,13 +63,14 @@ function getPost(e) {
   console.log(body);
   const opts = {
     method: "POST",
+    myHeaders,
     body: JSON.stringify(body),
   };
   // It's a server response to the content from the input field
   fetch(baseUrl, opts)
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
+      outputObj(data);
     });
 }
 
