@@ -32,12 +32,11 @@ myForm.append(btn);
 output.append(output1);
 btn.classList.add("box");
 
-btn.addEventListener("click", loadData);
+btn.addEventListener("click", getPost);
 
 function loadData(e) {
   e.preventDefault(); // preventing default actions on submitting the form
   console.log("ready");
-
   // Create Form Data dynamically (new form object)
   let formData = new FormData(myForm); // it's going generate the empty form data
   let data = [...formData.entries()];
@@ -49,6 +48,28 @@ function loadData(e) {
   console.log(res);
   let url = baseUrl + "?" + res;
   getData(url);
+}
+
+// POST data
+function getPost(e) {
+  e.preventDefault();
+  let formData = new FormData(myForm);
+  let body = {};
+  // Recreating the form (constructing and adding it to the body object)
+  formData.forEach((val, key) => {
+    body[key] = val;
+  });
+  console.log(body);
+  const opts = {
+    method: "POST",
+    body: JSON.stringify(body),
+  };
+  // It's a server response to the content from the input field
+  fetch(baseUrl, opts)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+    });
 }
 
 // GET Method
